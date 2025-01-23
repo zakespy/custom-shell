@@ -42,16 +42,17 @@ char** parseInput(char* line){
 				free(tokens);
 				return NULL;
 			}
-
 			strcpy(tokens[token_count],token);
+			printf("%s %s\n",tokens[token_count],token);
 			token_count++;
 
 			token = strtok(NULL," ");
 		
-		}	
-		for(int i=0;i<token_count;i++){
-			printf("[%d]: %s\n",i,tokens[i]);
 		}
+		printf("%d \n",token_count);
+		/*for(int i=0;i<token_count;i++){
+			printf("[%d]: %s\n",i,tokens[i]);
+		}*/
 
 		return (tokens);
 
@@ -130,9 +131,9 @@ int main(int argc,char **argv){
 			}*/
 
 
-			/*if(execvp(tokens[0],tokens) == -1){
+			if(execv("ls",tokens) == -1){
 				perror("Error");
-			}*/
+			}
 
 			/*printf("%s",line);*/
 		}else{
