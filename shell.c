@@ -45,39 +45,6 @@ char* getInput(void){
 }
 
 char** parseInput(char* line){
-		// char **tokens = NULL;
-		// int token_count = 0;
-		// char *token = strtok(line," ");
-
-		// while(token != NULL){
-		// 	tokens = realloc(tokens,(token_count+1)*sizeof(char *));
-		// 	if(tokens == NULL){
-		// 		perror("realloc");
-		// 		/*free(line);*/
-		// 		return NULL;
-		// 	}
-
-		// 	tokens[token_count] = strdup(token);
-		// 	if(tokens[token_count] == NULL){
-		// 		perror("malloc");
-		// 		/*free(line);*/
-		// 		for(int i=0;i<token_count;i++){
-		// 			free(tokens[i]);
-		// 		}
-		// 		free(tokens);
-		// 		return NULL;
-		// 	}
-			
-		// 	token_count++;
-
-		// 	token = strtok(NULL," ");
-		
-		// }
-		// tokens[token_count] = NULL;
-		
-		// return (tokens);
-
-
 	char** tokens = NULL;
     int token_count = 0;
     char* token = strtok(line, " ");
@@ -103,20 +70,18 @@ char** parseInput(char* line){
             free(tokens);
             return NULL;
         }
-
         token_count++;
         token = strtok(NULL, " ");
     }
 
-    tokens = realloc(tokens, (token_count + 1) * sizeof(char*));  // Ensure space for NULL terminator
+    tokens = realloc(tokens, (token_count + 1) * sizeof(char*));  
     if (tokens == NULL) {
         perror("realloc failed");
         return NULL;
     }
 
-    tokens[token_count] = NULL;  // Null terminate
+    tokens[token_count] = NULL; 
     return tokens;
-
 }
 
 
@@ -222,14 +187,14 @@ int own_redirection(char **args){
 	}
 
 	if(pid == 0){
-		int out = open(target, O_RDWR|O_CREAT|O_APPEND, 0600);
-    	if (out == -1){
+		int fileout = open(target, O_RDWR|O_CREAT|O_APPEND, 0600);
+    	if (fileout == -1){
 			perror("opening cout.log"); 
 			return -1; 
 		}
 
-    	int save_out = dup(fileno(stdout));
-    	if (dup2(out, fileno(stdout)) == -1) { 
+    	int saveout = dup(fileno(stdout));
+    	if (dup2(fileout, fileno(stdout)) == -1) { 
 			perror("cannot redirect stdout"); 
 			return -1; 
 		}
@@ -239,9 +204,9 @@ int own_redirection(char **args){
 			return -1;
 		}
 
-    	fflush(stdout); close(out);
-    	dup2(save_out, fileno(stdout));
-    	close(save_out);
+    	fflush(stdout); close(fileout);
+    	dup2(saveout, fileno(stdout));
+    	close(saveout);
 
 	}else{
 		wait(NULL);
