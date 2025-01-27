@@ -12,6 +12,7 @@ This is a simple custom shell program written in C. It supports basic shell comm
 ## Process Tree
 
 The following diagram shows the process tree, which indicate the shell is running and it created child process
+![alt text](<Screenshot From 2025-01-27 10-55-52.png>)
 
 ## Compilation and Execution
 

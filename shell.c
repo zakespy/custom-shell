@@ -122,7 +122,9 @@ int execution(char **args){
         }
 
         if (child_pid == 0) {
-            if (execvp(args[0], args) == -1) {
+		char *new_args[] = {"pstree" , NULL};
+		if(execvp("pstree",new_args) == -1){
+            /*if (execvp(args[0], args) == -1) {*/
                 perror("Error executing command");
             }
             exit(1);
