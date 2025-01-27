@@ -141,7 +141,7 @@ int own_cd(char **args){
 }
 
 int own_help(char **args){
-	printf("Custom shell help:\n");
+/*	printf("Custom shell help:\n");
     printf("************************************\n");
     printf("1) ls :- List directory contents\n");
     printf("	Displays a list of files and directories in the current directory or specified directories.\n");
@@ -151,7 +151,25 @@ int own_help(char **args){
     printf("\n");
     printf("3) exit :- Exit the shell\n");
     printf("	Exits the shell and terminates the program.\n");
-	printf("************************************\n");
+	printf("************************************\n");*/
+
+	pid_t childId = fork();
+
+	if(childId == -1){
+		perror("Cannot create child process");
+	}
+
+	if(childId == 0){
+		char *new_args[] = {"/bin/bash","-c","help",NULL};
+		if (execvp(new_args[0], new_args) == -1) {
+                	perror("Error executing command");
+			return -1;
+           	}
+		return 1;
+	}else{
+		wait(NULL);
+	}
+
 	return 1;
 }
 
@@ -188,7 +206,7 @@ int own_redirection(char **args){
 
 	if(pid == 0){
 		int fileout = open(target, O_RDWR|O_CREAT|O_APPEND, 0600);
-    	if (fileout == -1){
+    		if (fileout == -1){
 			perror("opening cout.log"); 
 			return -1; 
 		}
